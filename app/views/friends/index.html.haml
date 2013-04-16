@@ -1,0 +1,24 @@
+.hero-unit
+  %h3
+    Community starts with friendship!
+    %span= link_to "Learn more", about_path, id: 'learn-more'
+  -# TODO - add facebook like button
+  %p
+    Share your friendships with the hashtag
+    = link_to "#RubyFriends", twitter_url
+  %span.shared-smiles-count
+    #{rubyfriends_app.tweets_count} friendships so far!
+
+%ul#smiles-list
+  - paginated_tweets.each do |tweet|
+    - nth = cycle *%w[one two three four]
+    %li{class: nth }
+      .text
+        %p= raw(tweet.username)
+        %small
+          %span.username
+            = link_to tweet.username, friend_path(tweet.username)
+    - if nth == "four"
+      %hr
+
+= paginate(paginated_tweets)

@@ -1,0 +1,14 @@
+- tweeter = @friends.first
+%small
+  The ruby friendly tweets of
+  %span.username
+    = link_to tweeter.username, twitter_url(tweeter.username)
+%ul#smiles-list
+- @friends.each do |tweet|
+  - nth = cycle *%w[one two three four]
+  %li{class: nth }
+    .text
+    %p
+      = tweet.tweet_text
+    - if nth == "four"
+      %hr
