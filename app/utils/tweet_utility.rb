@@ -76,6 +76,8 @@ module TweetUtility
       # Carrierwave remote_fieldname_url will download image from url,
       # convert it and resave it.
       # We only want to set the field if there is a media url
+      tweet.media_url = media_url
+      tweet.media_display_url = tweet_status.media_display_url
       tweet.remote_image_url = media_url
     end
     tweet.published = true
