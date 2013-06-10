@@ -1,34 +1,38 @@
-.hero-unit
-  %h3
-    Community starts with friendship!
-    %span= link_to "Learn more", about_path, id: 'learn-more'
-  -# TODO - add facebook like button
-  %p
-    Share your friendships with the hashtag
-    = link_to "#RubyFriends", twitter_url
-  %span.shared-smiles-count
-    #{total_tweets} friendships so far!
+- paged_tweets = paginated_tweets
+- cache(['header', total_tweets]) do
+  .hero-unit
+    %h3
+      Community starts with friendship!
+      %span= link_to "Learn more", about_path, id: 'learn-more'
+    -# TODO - add facebook like button
+    %p
+      Share your friendships with the hashtag
+      = link_to "#RubyFriends", twitter_url
+    %span.shared-smiles-count
+      #{total_tweets} friendships so far!
 
-%ul#smiles-list
-  - paginated_tweets.map { |tweet| Tweet::HtmlPresenter.new tweet }.each do |tweet|
-    - nth = cycle *%w[one two three four]
-    %li{class: nth }
-      - if tweet.image_url
-        %a.ajax_overlay{href: tweet_path(tweet.tweet)}
-          = image_tag(tweet.image_url(:thumb).to_s)
-      .text
-        %p= raw(tweet.text)
-        %small
-          %span.username
-            = link_to tweet.username, twitter_url(tweet.username)
-          %br
-          = link_to "#{time_ago_in_words tweet.published_at} ago",
-            tweet.url,
-            class: :timeago,
-            title: tweet.published_at.iso8601
-    - if nth == "four"
-      %hr
+- max_tweet_id = paged_tweets.max {|a,b| a.tweet_id.to_i <=> b.tweet_id.to_i }.tweet_id
+- cache(['paged_tweets', max_tweet_id]) do
+  %ul#smiles-list
+    - paged_tweets.map { |tweet| Tweet::HtmlPresenter.new tweet }.each do |tweet|
+      - nth = cycle *%w[one two three four]
+      %li{class: nth }
+        - if tweet.image_url
+          %a.ajax_overlay{href: tweet_path(tweet.tweet)}
+            = image_tag(tweet.image_url(:thumb).to_s)
+        .text
+          %p= raw(tweet.text)
+          %small
+            %span.username
+              = link_to tweet.username, twitter_url(tweet.username)
+            %br
+            = link_to "#{time_ago_in_words tweet.published_at} ago",
+              tweet.url,
+              class: :timeago,
+              title: tweet.published_at.iso8601
+      - if nth == "four"
+        %hr
 
-= paginate(paginated_tweets)
+  = paginate(paged_tweets)
 
-= ajax_overlay
+  = ajax_overlay
