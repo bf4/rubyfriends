@@ -25,10 +25,17 @@ class Tweet::HtmlPresenter
     "@#{tweet.username}"
   end
 
-  private
+  def tweet_id
+    tweet.tweet_id.to_i
+  end
 
-  def method_missing(*args)
-    tweet.send *args
+  def method_missing(*arguments, &block)
+    method_sym = Array(arguments).first
+    if tweet.respond_to?(method_sym)
+      tweet.send(*arguments, &block)
+    else
+      super
+    end
   end
 
 end

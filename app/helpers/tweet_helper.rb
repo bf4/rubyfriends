@@ -13,8 +13,13 @@ module TweetHelper
     tweets.count
   end
 
-  def paginated_tweets(params = params[:page])
-    tweets.page(params).per(20)
+  # returns the highest tweet_id in the collection as a string
+  def max_tweet_id(paged_tweets)
+    paged_tweets.max {|a,b| a.tweet_id.to_i <=> b.tweet_id.to_i }.tweet_id.to_s
+  end
+
+  def presented_tweets(tweets)
+    tweets.map { |tweet| Tweet::HtmlPresenter.new(tweet) }
   end
 
   def tweet_display_text(text)
