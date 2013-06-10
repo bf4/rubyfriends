@@ -1,4 +1,3 @@
-- paged_tweets = paginated_tweets
 - cache(['header', total_tweets]) do
   .hero-unit
     %h3
@@ -11,10 +10,10 @@
     %span.shared-smiles-count
       #{total_tweets} friendships so far!
 
-- max_tweet_id = paged_tweets.max {|a,b| a.tweet_id.to_i <=> b.tweet_id.to_i }.tweet_id
-- cache(['paged_tweets', max_tweet_id]) do
+- tweets = presented_tweets(@paged_tweets)
+- cache(['paged_tweets', max_tweet_id(tweets)]) do
   %ul#smiles-list
-    - paged_tweets.map { |tweet| Tweet::HtmlPresenter.new tweet }.each do |tweet|
+    - tweets.each do |tweet|
       - nth = cycle *%w[one two three four]
       %li{class: nth }
         - if tweet.image_url
@@ -33,6 +32,6 @@
       - if nth == "four"
         %hr
 
-  = paginate(paged_tweets)
+  = paginate(@paged_tweets)
 
   = ajax_overlay
