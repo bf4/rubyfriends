@@ -22,7 +22,7 @@ gem 'kaminari'
 # diagnostics
 gem 'newrelic_rpm'
 # web server
-gem 'thin'
+gem 'passenger'
 # twitter api
 gem 'twitter'
 # cron jobs
