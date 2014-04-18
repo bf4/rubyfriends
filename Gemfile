@@ -1,10 +1,14 @@
 source 'https://rubygems.org'
+ruby "2.0.0"
 
-gem 'rails', '~> 3.2.0'
+gem 'rails', '~> 4.0.0'
 
 # image uploads
 gem 'carrierwave'
+gem 'sprockets-rails', :require => 'sprockets/railtie'
 gem 'fog'
+# Fog dependency for AWS keys
+gem 'unf'
 # image manipulation
 gem 'mini_magick'
 # view templating
@@ -19,21 +23,17 @@ gem 'newrelic_rpm'
 gem 'thin'
 # twitter api
 gem 'twitter'
-# cron jobs
-gem 'whenever', require: false
 
-group :assets do
-  # twitter boostrap converted to sass files
-  gem 'bootstrap-sass', '~> 2.1.0.0'
-  # javascript
-  gem 'coffee-rails', '~> 3.2.1'
-  gem 'compass-rails'
-  gem 'sass-rails', '~> 3.2.3'
-  # fluid grids
-  gem 'susy'
-  # compressor
-  gem 'uglifier', '>= 1.0.3'
-end
+# javascript
+gem 'coffee-rails', '~> 4.0.0'
+gem "compass-rails", '~> 1.1', '>= 1.1.5'
+gem 'sass-rails', '~> 4.0.0'
+# twitter boostrap converted to sass files
+gem 'bootstrap-sass', '~> 2.1.0.0'
+# fluid grids
+gem 'susy'
+# compressor
+gem 'uglifier', '>= 1.3.0'
 
 group :production do
   def require_false_unless(gem_name, condition)
@@ -45,7 +45,7 @@ group :production do
     gem gem_name
   end
   # memcached
-  require_false_unless('memcachier', !!ENV['MEMCACHIER_USERNAME'])
+  gem 'memcachier'
   gem 'dalli'
 
   # db
@@ -53,6 +53,10 @@ group :production do
   # heroku addon
   # gem 'carrierwave' # must come first
   require_false_unless('cloudinary', !!ENV['CLOUDINARY_URL'])
+
+  # required by heroku
+  gem 'rails_12factor'
+  gem 'rails_serve_static_assets'
 end
 
 group :development do
@@ -70,7 +74,7 @@ end
 
 group :test do
   # acceptance testing
-  gem 'cucumber-rails', require: false
+  gem 'cucumber-rails', require: false, github: 'cucumber/cucumber-rails' # see https://github.com/cucumber/cucumber-rails/pull/253#issuecomment-23400508
   # clear db
   gem 'database_cleaner'
   # notifier

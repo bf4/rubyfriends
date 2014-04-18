@@ -35,7 +35,7 @@ Check out all our wonderful [#RubyFriends](http://www.rubyfriends.com).
   ```bash
   bundle exec rake db:migrate db:test:prepare spec
   bundle exec rake refresh_tweets
-  bundle exec rails s
+  bundle exec foreman start
   ```
 
   5. Create your feature branch
@@ -76,8 +76,8 @@ Check out all our wonderful [#RubyFriends](http://www.rubyfriends.com).
   # else file_storage: s3 and set s3 keys
   heroku addons:add memcachier:dev # memcached
   # the Gemfile should automatically require
-  # the 'memcachier' and 'cloudinary' gems
-  # if the services are configured
+  # the 'cloudinary' gem
+  # if the service is  configured
   bundle exec rake figaro:heroku
   # if not using a worker
     heroku addons:add scheduler:standard
@@ -85,9 +85,9 @@ Check out all our wonderful [#RubyFriends](http://www.rubyfriends.com).
     # schedule every 10 minutes
     # bundle exec rake refresh_tweets
   git push heroku master
-  heroku rake db:migrate
+  heroku run rake db:migrate
   heroku logs # check that it's working
-  heroku rake refresh_tweets
+  heroku run rake refresh_tweets
   ```
 
 ## Thanks
