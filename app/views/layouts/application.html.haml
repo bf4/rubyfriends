@@ -16,6 +16,7 @@
           = link_to image_tag('feed_icon_grey.png'), tweets_url(format: :atom)
       %section#main{ role: :main }
         = yield
+    = fork_me_ribbon
     = javascript_include_tag :application
     = yield :javascripts
     = render 'shared/ga'
