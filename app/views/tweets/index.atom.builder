@@ -1,10 +1,10 @@
-@tweets.map! { |tweet| Tweet::FeedPresenter.new(tweet) }
+tweets =  paginated_tweets.map { |tweet| Tweet::FeedPresenter.new(tweet) }
 
 atom_feed root_url: tweets_url do |feed|
   feed.title Rails.configuration.tweet_app.title
-  feed.updated @tweets.first.updated_at
+  feed.updated tweets.first.updated_at
 
-  @tweets.each do |tweet|
+  tweets.each do |tweet|
     feed.entry tweet do |entry|
       entry.url tweet.url
       entry.title tweet.title
