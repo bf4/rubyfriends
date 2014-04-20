@@ -1,4 +1,4 @@
-tweets =  paginated_tweets.map { |tweet| Tweet::FeedPresenter.new(tweet) }
+tweets = presented_tweets(@paged_tweets).map { |tweet| Tweet::FeedPresenter.new(tweet) }
 
 atom_feed root_url: tweets_url do |feed|
   feed.title Rails.configuration.tweet_app.title
