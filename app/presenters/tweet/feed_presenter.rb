@@ -1,16 +1,22 @@
-class Tweet::FeedPresenter
-  attr_accessor :tweet
-
-  def initialize(tweet)
-    self.tweet = tweet
-  end
+require_relative 'html_presenter'
+class Tweet::FeedPresenter < Tweet::HtmlPresenter
 
   extend Forwardable
-  def_delegators  :@tweet, :updated_at, :id, :media_display_url,
-                  :tweet_text, :media_url, :to_param
+  def_delegators  :@tweet,
+    :updated_at,
+    :tweet_text,
+    :media_url
 
   def self.model_name
     Tweet.model_name
+  end
+
+  def id
+    tweet.tweet.id
+  end
+
+  def to_param
+    tweet.tweet.to_param
   end
 
   def author
@@ -27,10 +33,6 @@ class Tweet::FeedPresenter
 
   def title
     "#{username}: #{tweet_text}".truncate 50
-  end
-
-  def url
-    media_display_url
   end
 
   def username
